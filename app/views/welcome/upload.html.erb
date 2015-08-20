@@ -1,0 +1,96 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.2.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Autodesk.ADN.Toolkit.Viewer -->
+    <script src=" p.js"></script>
+    <script src="upload.js"></script>
+
+    </script>
+</head>
+
+<body onload="initialize();">
+<% if !@user.judge %>
+    <div id="nav-bar" class="navbar navbar-default app-navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand trackit nomargin" href="/"><img width="160px;" src="../Autodesk_logo.png"/></a>
+        </div>
+        <div class="navbar-nav-large navbar-collapse collapse" id="navbar-user">
+          <ul class="nav navbar-nav">
+            <li><%= link_to 'Home', '/'%></li>
+            <li class = "active"><%= link_to 'Upload', '/upload'%></li>
+            <li><%= link_to 'View', '/view'%></li>
+            <li><%= link_to('Edit registration', edit_user_registration_path) %></li>
+            <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+
+  <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Upload and translate a file </h3> 
+
+            </div>
+            <div class="panel-body">
+                <input class="form-control" type="file" id="files" name="files" multiple />
+
+                <br />
+                <div style="text-align: center;">
+                    <a class="btn btn-primary" id="btnTranslateThisOne">Translate this for me</a>
+                </div>
+
+                <br />
+                <div id="msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Uploaded and translateds URNs</h3>
+            </div>
+            <div class="panel-body">
+       
+
+                <legend>My URN list</legend>
+                <div>Copy any of the following URNs and paste it in the form below with a title to add it to your URNs stored here</div>
+                <div id="list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Store URNs</h3>
+            </div>
+            <div class="panel-body">
+            	<%= form_for @mod, url: {action: "create", controller: "mods"}, html: {class: "nifty_form"} do |f| %>
+            	<p><%= f.label :title %><br>
+    			<%= f.text_field :title %></p>
+    			<p><%= f.label :urn %><br>
+    			<%= f.text_field :urn %></p>
+            	<%= f.check_box :latest %> Make this the viewable (visible on your home page)<br><br>
+                <%= f.hidden_field :uid , :value => @user.id %>
+            	<%= f.submit "Add to my Models" %><br>
+            	<% end %>
+          </div>
+    </div>
+    </div>
+</div>
+<% end %>
+</body>
+</html>

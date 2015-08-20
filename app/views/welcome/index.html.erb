@@ -1,0 +1,94 @@
+  <html>
+  <head>
+
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.css?v=v1.2.13" type="text/css">
+    <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js?v=v1.2.13"></script>
+    <script>
+    // change the token and urn(translated file location) before you try to run
+    // easiest is to go through steps on http://shiya.github.io/Intro-View-and-Data/
+    var token = gon.token
+    var urn = gon.urn
+
+    $(document).ready(function () {
+    if(window.location.href.indexOf("urn") > -1) {
+       urn = window.location.href.substring(window.location.href.indexOf("urn")+4);
+    }
+    });
+
+    function getToken() {
+        return token;
+    }
+    function loadDocument(viewer, documentId) {
+        // Find the first 3d geometry and load that.
+        Autodesk.Viewing.Document.load(documentId, function(doc) {
+        var geometryItems = [];
+        geometryItems = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {
+            'type' : 'geometry',
+            'role' : '3d'
+        }, true);
+
+        if (geometryItems.length > 0) {
+            viewer.load(doc.getViewablePath(geometryItems[0]));
+        }
+     }, function(errorMsg) {// onErrorCallback
+        alert("Load Error: " + errorMsg);
+        });
+    }
+    
+    function initialize() {
+        var options = {
+            'document' : 'urn:' + urn,
+            'env':'AutodeskProduction',
+            'getAccessToken': getToken,
+            'refreshToken': getToken,
+            };
+        var viewerElement = document.getElementById('viewer');
+        var viewer = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+
+        Autodesk.Viewing.Initializer(options,function() {
+            viewer.initialize();
+            loadDocument(viewer, options.document);
+        });
+    }
+    
+    initialize();
+    </script>
+</head>
+<body onload="initialize();">
+    <div id="nav-bar" class="navbar navbar-default app-navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand trackit nomargin" href="/"><img width="160px;" src="../Autodesk_logo.png"/></a>
+        </div>
+        <div class="navbar-nav-large navbar-collapse collapse" id="navbar-user">
+          <ul class="nav navbar-nav">
+            <li class = "active"><%= link_to 'Home', '/'%></li>
+            <% if !@user.judge %>
+            <li><%= link_to 'Upload', '/upload'%></li>
+            <% end %>
+            <li><%= link_to 'View', '/view'%></li>
+            <li><%= link_to('Edit registration', edit_user_registration_path) %></li>
+            <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+        <% if @status == "works" %>
+            <div id="viewer" style="position:absolute; width:90%; height:80%;"></div>
+        <% elsif @status == "none" %>
+            <h4> You currently have no uploaded models. If you haven't already, add a key and a secret by going to <%= link_to('Edit registration', edit_user_registration_path) %><br>Translate and store URNs by going to <a href=<%= '/upload'%> style="text-decoration: none"> Upload </a> </h4>
+        <% elsif @status == "noviewable" %>
+            <h4> You currently have no viewable. Translate and store URNs by going to <a href=<%= '/upload'%> style="text-decoration: none"> Upload </a> </h4>
+        
+        <% end %>
+</div>
+</body>
+</html>
