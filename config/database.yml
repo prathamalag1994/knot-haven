@@ -21,10 +21,10 @@ test:
   database: db/test.sqlite3
 
 
-#production:
-  #adapter: postgresql
-  #encoding: unicode
-  #database: dftgj3lj9sbv4p
-  #pool: 5
-  #username: dtjntrannanspk
-  #password: -mkcNMb_llrBYHCpKh7PpNt04A
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: d421hp4j8dq04k
+  pool: 5
+  username: hszhqzomadeeag
+  password: YeS8mbjLyjjlTj-v1J9DfDErHr
