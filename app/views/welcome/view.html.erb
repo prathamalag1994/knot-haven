@@ -94,7 +94,7 @@
 		<% if @mods.count == 0 %>
 			<h4>You have not stored any URNs yet! Translate and store URNs by going to <a href=<%= '/upload'%> style="text-decoration: none"> Upload </a> </h4>
 		<% end %>
-            <h4>Please select on of the following user models or manupilations:</h4> <br>
+            <h4>Please select one of the following user models or knot manupilation examples:</h4> <br>
 			<h4><% @mods.each do |mod| %>
                 
 			<a href=<%= '/' + '?urn=' + mod.urn %> style="text-decoration: none"><%= mod.title %></a><br>
