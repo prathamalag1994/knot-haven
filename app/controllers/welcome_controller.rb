@@ -1,5 +1,6 @@
 class WelcomeController < ApplicationController
   def index
+    #removing bounds of viewership now
     if current_user.judgep == "autodesk"
       current_user.judge = true
     else
