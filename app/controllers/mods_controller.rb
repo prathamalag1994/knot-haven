@@ -3,11 +3,12 @@ class ModsController < ApplicationController
   end
  
   def create
+    general = current_user #anyone can upload
   	@mod = Mod.new(mod_params)
   	if @mod.save
       if @mod.latest
-        if Mod.where(:uid => current_user.id).where(:latest => true).count > 1
-          @change = Mod.where(:uid => current_user.id).where(:latest => true).first
+        if Mod.where(:uid => general.id).where(:latest => true).count > 1
+          @change = Mod.where(:uid => general.id).where(:latest => true).first
           @change.latest = false
           @change.save
         end
