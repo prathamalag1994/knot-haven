@@ -18,6 +18,7 @@ class ModsController < ApplicationController
     @mod.save
   	redirect_to '/view'
   end
+  
   private
   def mod_params
     params.require(:mod).permit(:title, :latest, :urn, :uid)

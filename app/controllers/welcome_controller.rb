@@ -29,6 +29,7 @@ class WelcomeController < ApplicationController
     @user = current_user
   end
 
+#fullscreen page
   def angelh
     if current_user.judgep == "autodesk"
       current_user.judge = true
@@ -41,9 +42,9 @@ class WelcomeController < ApplicationController
       @users = User.where.not(judge: true)
     else
       if request.original_url.include?("urn")
-        @status = "works"
         token = JSON.parse(CurbFu.post({:host => 'developer.api.autodesk.com', :path => '/authentication/v1/authenticate', :protocol => "https"}, { :client_id => current_user.key, :client_secret => current_user.secret, :grant_type => 'client_credentials' }).body)
         gon.token = token["access_token"]
+        @status = "works"
       elsif Mod.where(:uid => current_user.id).count == 0
         @status = "none"
       elsif Mod.where(:uid => current_user.id).where(:latest => true).count != 0
